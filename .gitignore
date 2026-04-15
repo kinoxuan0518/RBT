@@ -1,0 +1,33 @@
+# Node
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Env and secrets
+.env
+.env.local
+.env.*.local
+
+# OS and editor
+.DS_Store
+.idea/
+.vscode/
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+tmp/
+temp/
+artifacts/
+captures/
+downloads/
+
+# Private local overrides
+private/
+workspace/
+profiles/
+secrets/
