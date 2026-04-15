@@ -109,6 +109,8 @@ RBT/
   LICENSE
   .gitignore
   docs/
+    bosszhipin-closed-loop.md
+    host-integration.md
     migration-from-private-agent.md
   specs/
     agent-contract.md
@@ -162,8 +164,10 @@ Read these first:
 ### Option B: Wire it into a host
 
 - Codex: [`agents/codex/SKILL.md`](./agents/codex/SKILL.md)
+- Codex Bosszhipin orchestrator: [`agents/codex/BOSSZHIPIN_ORCHESTRATOR.md`](./agents/codex/BOSSZHIPIN_ORCHESTRATOR.md)
 - Claude Code: [`agents/claude/AGENT.md`](./agents/claude/AGENT.md)
 - Bosszhipin closed-loop model: [`docs/bosszhipin-closed-loop.md`](./docs/bosszhipin-closed-loop.md)
+- Host integration: [`docs/host-integration.md`](./docs/host-integration.md)
 
 ### Option C: Port an existing private agent
 
