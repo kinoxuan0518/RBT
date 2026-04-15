@@ -1,20 +1,32 @@
 # RBT
 
-RBT, short for Release Bosszhipin Time, is an open framework for turning a useful private sub-agent into a reusable public one.
+RBT, short for Release Bosszhipin Time, is a Bosszhipin closed-loop orchestrator that turns one high-level command into a full recruiting run.
 
-Its core idea is simple: one command starts a closed-loop Bosszhipin recruiting run.
-
-RBT is designed for people who already have an internal workflow that works, but want to publish the portable layer without leaking private environment details.
+It is built for people who already have a private workflow that works, and want to preserve the real operational value publicly without leaking private infrastructure.
 
 > Release your Bosszhipin Time.
 
+## What Happens When You Type `start`
+
+RBT should be able to:
+
+1. start a Bosszhipin run with one command
+2. call an outreach skill
+3. push that outreach stage to real closure
+4. switch into message and resume handling
+5. evaluate and upload or sync downstream results
+6. run one more cleanup pass if backlog remains
+7. return a structured summary
+
+That is the product.
+
 ## At A Glance
 
-- Start a Bosszhipin run with one command instead of step-by-step instruction
-- Orchestrate proactive outreach and downstream inbox or resume handling as one loop
-- Standardize modes, stages, events, and safety boundaries
-- Support multiple hosts such as Codex and Claude Code
-- Keep production selectors, accounts, and private rules behind private adapters
+- One command instead of step-by-step instruction
+- One orchestrator coordinating outreach plus message or resume handling
+- One closed loop from greeting to downstream upload or sync
+- Minimal user micromanagement
+- Public orchestration layer, private execution layer
 
 ## The Core Value
 
@@ -28,6 +40,16 @@ The most important thing RBT wants to preserve is not generic abstraction. It is
 That is the original value behind Zeno-like orchestration on Bosszhipin.
 
 RBT turns that value into a public, reusable shape.
+
+## The Product In One Sentence
+
+RBT lets a user say `start`, then takes over the Bosszhipin loop by coordinating:
+
+- proactive outreach
+- message processing
+- resume evaluation
+- upload or sync closure
+- summary reporting
 
 ## Why RBT
 
@@ -75,6 +97,25 @@ In practice, RBT gives you a clean split:
 
 - public repo: contract, wrappers, schemas, examples
 - private repo: production adapters, secrets, platform details, business logic
+
+## Why This Is Better Than A Prompt Dump
+
+A raw private prompt is usually not reusable.
+
+It tends to be tied to:
+
+- one machine
+- one browser setup
+- one ATS
+- one operator's habits
+
+RBT keeps the part that other people can actually copy:
+
+- the orchestration logic
+- the one-command experience
+- the stage order
+- the summary format
+- the boundaries between orchestrator and downstream skills
 
 ## The Closed Loop
 
