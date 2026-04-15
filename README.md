@@ -4,6 +4,15 @@ RBT, short for Release Bosszhipin Time, is an open framework for turning a usefu
 
 It is designed for people who already have an internal workflow that works, but want to publish the portable layer without leaking private environment details.
 
+> Build the public shell of a powerful private sub-agent.
+
+## At A Glance
+
+- Publish reusable orchestration without exposing private infrastructure
+- Standardize agent modes, stages, events, and adapter boundaries
+- Support multiple hosts such as Codex and Claude Code
+- Keep vendor logic and production automation behind private adapters
+
 ## Why RBT
 
 Many sub-agents are "usable" only inside the original author's machine because they depend on:
@@ -24,6 +33,15 @@ RBT extracts the reusable part:
 - adapter contracts
 - host wrappers for different agent environments
 
+## Who This Is For
+
+RBT is for you if:
+
+- you already have a private agent that works
+- you want to open source the reusable layer
+- you do not want to leak prompts, selectors, accounts, or internal data
+- you need one contract that can be adapted to different agent hosts
+
 ## What RBT Is
 
 RBT is a coordinator sub-agent framework.
@@ -33,6 +51,11 @@ It does not assume one platform. It assumes:
 - a host agent exists
 - the host can provide tools or adapters
 - the workflow needs orchestration, reporting, and safety checks
+
+In practice, RBT gives you a clean split:
+
+- public repo: contract, wrappers, schemas, examples
+- private repo: production adapters, secrets, platform details, business logic
 
 ## What RBT Is Not
 
@@ -96,26 +119,26 @@ RBT/
 
 ## Quick Start
 
-### 1. Read the contract
+### Option A: Understand the framework
 
-Start with:
+Read these first:
 
-- [specs/agent-contract.md](/Users/blacklake/Downloads/new/RBT/specs/agent-contract.md)
-- [specs/adapter-interface.ts](/Users/blacklake/Downloads/new/RBT/specs/adapter-interface.ts)
-- [specs/event-schema.json](/Users/blacklake/Downloads/new/RBT/specs/event-schema.json)
+- [`specs/agent-contract.md`](./specs/agent-contract.md)
+- [`specs/adapter-interface.ts`](./specs/adapter-interface.ts)
+- [`specs/event-schema.json`](./specs/event-schema.json)
 
-### 2. Pick a host wrapper
+### Option B: Wire it into a host
 
-- Codex: [agents/codex/SKILL.md](/Users/blacklake/Downloads/new/RBT/agents/codex/SKILL.md)
-- Claude Code: [agents/claude/AGENT.md](/Users/blacklake/Downloads/new/RBT/agents/claude/AGENT.md)
+- Codex: [`agents/codex/SKILL.md`](./agents/codex/SKILL.md)
+- Claude Code: [`agents/claude/AGENT.md`](./agents/claude/AGENT.md)
 
-### 3. Keep your implementation private
+### Option C: Port an existing private agent
 
 Use adapters to bind your private workflow to the public contract.
 
 Before publishing, run through:
 
-- [templates/private-boundary-checklist.md](/Users/blacklake/Downloads/new/RBT/templates/private-boundary-checklist.md)
+- [`templates/private-boundary-checklist.md`](./templates/private-boundary-checklist.md)
 
 ## Porting A Private Agent
 
@@ -129,7 +152,7 @@ When moving an existing private sub-agent into RBT:
 
 There is also a migration note here:
 
-- [docs/migration-from-private-agent.md](/Users/blacklake/Downloads/new/RBT/docs/migration-from-private-agent.md)
+- [`docs/migration-from-private-agent.md`](./docs/migration-from-private-agent.md)
 
 ## Suggested Release Strategy
 
@@ -146,6 +169,18 @@ Then add:
 - evolution helpers
 - analytics helpers
 - richer event taxonomy
+
+## First Release Scope
+
+The current public release focuses on:
+
+- agent contract
+- event schema
+- adapter interfaces
+- host wrappers
+- migration guidance
+
+It does not yet try to ship a production-ready platform adapter. That boundary is deliberate.
 
 ## Chinese Summary
 
