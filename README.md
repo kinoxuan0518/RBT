@@ -4,7 +4,7 @@ RBT, short for Release Bosszhipin Time, is an open framework for turning a usefu
 
 It is designed for people who already have an internal workflow that works, but want to publish the portable layer without leaking private environment details.
 
-> Build the public shell of a powerful private sub-agent.
+> Release your Bosszhipin Time.
 
 ## At A Glance
 
