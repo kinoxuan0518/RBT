@@ -2,20 +2,36 @@
 
 RBT, short for Release Bosszhipin Time, is an open framework for turning a useful private sub-agent into a reusable public one.
 
-It is designed for people who already have an internal workflow that works, but want to publish the portable layer without leaking private environment details.
+Its core idea is simple: one command starts a closed-loop Bosszhipin recruiting run.
+
+RBT is designed for people who already have an internal workflow that works, but want to publish the portable layer without leaking private environment details.
 
 > Release your Bosszhipin Time.
 
 ## At A Glance
 
-- Publish reusable orchestration without exposing private infrastructure
-- Standardize agent modes, stages, events, and adapter boundaries
+- Start a Bosszhipin run with one command instead of step-by-step instruction
+- Orchestrate proactive outreach and downstream inbox or resume handling as one loop
+- Standardize modes, stages, events, and safety boundaries
 - Support multiple hosts such as Codex and Claude Code
-- Keep vendor logic and production automation behind private adapters
+- Keep production selectors, accounts, and private rules behind private adapters
+
+## The Core Value
+
+The most important thing RBT wants to preserve is not generic abstraction. It is this operational value:
+
+- an orchestrator can call an outreach skill
+- then call a message and resume handling skill
+- then close the loop with upload or sync
+- and the user only needs to say "start"
+
+That is the original value behind Zeno-like orchestration on Bosszhipin.
+
+RBT turns that value into a public, reusable shape.
 
 ## Why RBT
 
-Many sub-agents are "usable" only inside the original author's machine because they depend on:
+Many private recruiting sub-agents are "usable" only inside the original author's machine because they depend on:
 
 - absolute paths
 - one browser controller
@@ -23,11 +39,12 @@ Many sub-agents are "usable" only inside the original author's machine because t
 - one set of private prompts
 - one company's selectors, rules, and logs
 
-RBT extracts the reusable part:
+RBT extracts the reusable part while keeping the real operational idea intact:
 
+- one-command startup
+- closed-loop stage orchestration
 - role and lifecycle
 - command routing
-- stage orchestration
 - event schema
 - safety and stop semantics
 - adapter contracts
@@ -44,18 +61,33 @@ RBT is for you if:
 
 ## What RBT Is
 
-RBT is a coordinator sub-agent framework.
+RBT is a Bosszhipin-oriented closed-loop orchestrator pattern.
 
 It does not assume one platform. It assumes:
 
 - a host agent exists
-- the host can provide tools or adapters
+- the host can provide two executable capabilities:
+- one for proactive outreach
+- one for message, resume, and upload handling
 - the workflow needs orchestration, reporting, and safety checks
 
 In practice, RBT gives you a clean split:
 
 - public repo: contract, wrappers, schemas, examples
 - private repo: production adapters, secrets, platform details, business logic
+
+## The Closed Loop
+
+The canonical RBT loop is:
+
+1. Start proactive outreach.
+2. Push that stage to real closure.
+3. Switch into message or resume handling.
+4. Evaluate, filter, and upload or sync downstream results.
+5. Re-run cleanup only if backlog remains.
+6. Emit a structured summary.
+
+This is the product, not just the wrapper.
 
 ## What RBT Is Not
 
@@ -131,6 +163,7 @@ Read these first:
 
 - Codex: [`agents/codex/SKILL.md`](./agents/codex/SKILL.md)
 - Claude Code: [`agents/claude/AGENT.md`](./agents/claude/AGENT.md)
+- Bosszhipin closed-loop model: [`docs/bosszhipin-closed-loop.md`](./docs/bosszhipin-closed-loop.md)
 
 ### Option C: Port an existing private agent
 
@@ -174,6 +207,7 @@ Then add:
 
 The current public release focuses on:
 
+- the Bosszhipin closed-loop orchestration idea
 - agent contract
 - event schema
 - adapter interfaces

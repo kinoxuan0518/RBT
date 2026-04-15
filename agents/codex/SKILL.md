@@ -1,17 +1,25 @@
 ---
 name: rbt
-description: Portable RBT coordinator wrapper for Codex. Use when you want a reusable sub-agent contract that can be bound to local adapters instead of hard-coded private workflows.
+description: RBT is a Bosszhipin closed-loop orchestrator for Codex. It starts an end-to-end run with minimal user instruction by coordinating an outreach skill and a message or resume handling skill.
 ---
 
 # RBT For Codex
 
-This is the public Codex wrapper for RBT. It is intentionally host-oriented and adapter-driven.
+This is the public Codex wrapper for RBT.
+
+Its main job is not generic abstraction. Its main job is to preserve a high-value operating pattern:
+
+- start with one command
+- call the outreach skill
+- call the message or resume handling skill
+- close the loop
+- return a clear summary
 
 ## Use This When
 
-- the user wants a reusable sub-agent
-- the workflow should run across different environments
-- the host can provide tools, scripts, or MCP servers via adapters
+- the user wants a Bosszhipin closed-loop orchestrator
+- the user should not need to micromanage every stage
+- the host can provide an outreach capability and a message or resume capability
 
 ## Do Not Assume
 
@@ -25,7 +33,8 @@ This is the public Codex wrapper for RBT. It is intentionally host-oriented and 
 
 Before execution, the host must map local capabilities to these roles:
 
-- `TaskAdapter`
+- `OutreachTaskAdapter`
+- `MessageResumeTaskAdapter`
 - `OutcomeStoreAdapter`
 - `NotificationAdapter`
 - `SafetyAdapter`
@@ -60,20 +69,20 @@ Map user requests into:
 
 ### MORNING_RUN
 
-- Stage A: proactive work
-- Stage B: inbound or evaluation work
+- Stage A: proactive outreach
+- Stage B: message, resume, and upload handling
 - Stage C: cleanup or retry pass
 - Stage D: summary
 
 ### EVENING_RUN
 
-- Stage B
+- Stage B: message, resume, and upload handling
 - Stage D
 
 ### FULL_RUN
 
-- Stage A
-- Stage B
+- Stage A: proactive outreach
+- Stage B: message, resume, and upload handling
 - optional extra proactive pass if safety allows
 - Stage C
 - Stage D
@@ -115,3 +124,7 @@ If the local environment has private rules or scripts:
 - call them through adapters
 - do not expose their internals in public output
 - avoid copying private prompts into this public wrapper
+
+## The Core Promise
+
+If the user says "start", RBT should be able to take it from there.
