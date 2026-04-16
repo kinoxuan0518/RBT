@@ -1,340 +1,113 @@
-# RBT
+# RBT — Release BossZhipin Time
 
-RBT, short for Release Bosszhipin Time, is a Bosszhipin closed-loop orchestrator that turns one high-level command into a full recruiting run.
+一句话启动完整的 BOSS 直聘招聘闭环：主动打招呼 → 消息处理 → 简历评估 → 飞书上传。
 
-It does not replace the Bosszhipin skills. It orchestrates them.
+```
+rbt 开始晨间流程
+```
 
-It is built for people who already have a private workflow that works, and want to preserve the real operational value publicly without leaking private infrastructure.
+## 系统要求
 
-> Release your Bosszhipin Time.
+- macOS（浏览器控制依赖 AppleScript）
+- Google Chrome（已登录 BOSS 直聘企业端）
+- Python 3
+- Codex / Claude Code / Qoderwork / 任何支持 bash 的 AI 工具
 
-## Before You Install
+## 安装
 
-RBT is not standalone.
+```bash
+git clone https://github.com/kinoxuan0518/RBT.git
+cd RBT
+./install.sh
+```
 
-Install and verify these first:
+`install.sh` 会自动完成：
+- 检测你使用的 AI 工具（Codex / Claude Code / 其他）
+- 安装 `bosszhibin-auto-recruiter` 和 `bosszhibin-message-resume-handler`
+- 安装 RBT 编排层
+- 生成 `config.env` 供你填写飞书配置
+- （Codex 用户）创建定时自动化
 
-1. [`bosszhibin-auto-recruiter-skill`](https://github.com/kinoxuan0518/bosszhibin-auto-recruiter-skill)
-2. [`bosszhibin-message-resume-handler`](https://github.com/kinoxuan0518/bosszhibin-message-resume-handler)
-3. then `RBT`
+## 配置飞书
 
-If the two Bosszhipin skills are not already working in your environment, RBT will not give you a useful closed loop yet.
+安装完成后编辑 `config.env`：
 
-## What Happens When You Type `start`
+```bash
+FEISHU_APP_ID=cli_xxxxxxxxxxxxxxxx
+FEISHU_APP_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+FEISHU_BITABLE_APP_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+FEISHU_TABLE_CANDIDATE_MASTER=tblxxxxxxxxxxxxxxxx
+FEISHU_TABLE_INTERACTION_LOG=tblxxxxxxxxxxxxxxxx
+FEISHU_TABLE_JOB_FUNNEL_DAILY=tblxxxxxxxxxxxxxxxx
+```
 
-RBT should be able to:
+如何获取这些值：见 [`docs/feishu-setup.md`](docs/feishu-setup.md)
 
-1. start a Bosszhipin run with one command
-2. call an outreach skill
-3. push that outreach stage to real closure
-4. switch into message and resume handling
-5. evaluate and upload or sync downstream results
-6. run one more cleanup pass if backlog remains
-7. return a structured summary
+配置完成后：
 
-That is the product.
+```bash
+source config.env
+```
 
-## At A Glance
+## 使用
 
-- One command instead of step-by-step instruction
-- One orchestrator coordinating outreach plus message or resume handling
-- One closed loop from greeting to downstream upload or sync
-- Minimal user micromanagement
-- Public orchestration layer, private execution layer
+打开 Chrome，登录 BOSS 直聘企业端，然后在你的 AI 工具中：
 
-## Dependency Model
+| 命令 | 效果 |
+|------|------|
+| `rbt 开始晨间流程` | 打招呼 → 消息 → 简历 → 飞书上传 |
+| `rbt 开始晚间流程` | 消息 → 简历 → 飞书上传 |
+| `rbt 开始完整流程` | 完整闭环（含补招） |
+| `rbt 状态` | 查看当前进度 |
+| `rbt 停止` | 安全停止 |
+| `rbt 自我进化` | 分析飞书数据，优化筛选规则 |
 
-RBT is not a standalone recruiting skill.
+### Codex 用户
 
-RBT assumes you already have:
+安装后在 Codex → Automations → rbt 中启用定时触发（工作日早 10:00）。
 
-- one usable Bosszhipin outreach skill
-- one usable Bosszhipin message and resume handling skill
+### Claude Code 用户
 
-RBT sits on top of those skills and coordinates them into one closed loop.
+```
+@rbt 开始晨间流程
+```
 
-## The Core Value
+## 工作原理
 
-The most important thing RBT wants to preserve is not generic abstraction. It is this operational value:
+RBT 是纯编排层，不直接操作浏览器，由下游两个 skill 完成实际执行：
 
-- an orchestrator can call an outreach skill
-- then call a message and resume handling skill
-- then close the loop with upload or sync
-- and the user only needs to say "start"
+```
+RBT（编排）
+  ├── bosszhibin-auto-recruiter    → 主动打招呼
+  └── bosszhibin-message-resume-handler → 消息/简历/飞书
+```
 
-That is the original value behind Zeno-like orchestration on Bosszhipin.
+浏览器控制方式：`osascript → AppleScript → Chrome JS 注入`，无需任何额外 MCP 或插件。
 
-RBT turns that value into a public, reusable shape.
+## 技能依赖
 
-## The Product In One Sentence
+| 技能 | 仓库 | 说明 |
+|------|------|------|
+| bosszhibin-auto-recruiter | [链接](https://github.com/kinoxuan0518/bosszhibin-auto-recruiter-skill) | 自动打招呼 |
+| bosszhibin-message-resume-handler | [链接](https://github.com/kinoxuan0518/bosszhibin-message-resume-handler) | 消息与简历处理 |
 
-RBT lets a user say `start`, then takes over the Bosszhipin loop by coordinating:
+`install.sh` 会自动安装，无需手动 clone。
 
-- proactive outreach
-- message processing
-- resume evaluation
-- upload or sync closure
-- summary reporting
+## 项目结构
 
-## Why RBT
-
-Many private recruiting sub-agents are "usable" only inside the original author's machine because they depend on:
-
-- absolute paths
-- one browser controller
-- one ATS or spreadsheet
-- one set of private prompts
-- one company's selectors, rules, and logs
-
-RBT extracts the reusable part while keeping the real operational idea intact:
-
-- one-command startup
-- closed-loop stage orchestration
-- role and lifecycle
-- command routing
-- event schema
-- safety and stop semantics
-- adapter contracts
-- host wrappers for different agent environments
-
-## Who This Is For
-
-RBT is for you if:
-
-- you already have a private agent that works
-- you want to open source the reusable layer
-- you do not want to leak prompts, selectors, accounts, or internal data
-- you need one contract that can be adapted to different agent hosts
-
-## What RBT Is
-
-RBT is a Bosszhipin-oriented closed-loop orchestrator pattern.
-
-It does not assume one platform. It assumes:
-
-- a host agent exists
-- the host can provide two executable capabilities:
-- one for proactive outreach
-- one for message, resume, and upload handling
-- the workflow needs orchestration, reporting, and safety checks
-
-In practice, RBT gives you a clean split:
-
-- public repo: contract, wrappers, schemas, examples
-- private repo: production adapters, secrets, platform details, business logic
-
-And a clean responsibility split:
-
-- Boss skills: do the actual outreach, message handling, resume handling, and upload work
-- RBT: decides when each skill runs, when a stage is really done, and when to summarize
-
-## Why This Is Better Than A Prompt Dump
-
-A raw private prompt is usually not reusable.
-
-It tends to be tied to:
-
-- one machine
-- one browser setup
-- one ATS
-- one operator's habits
-
-RBT keeps the part that other people can actually copy:
-
-- the orchestration logic
-- the one-command experience
-- the stage order
-- the summary format
-- the boundaries between orchestrator and downstream skills
-
-## The Closed Loop
-
-The canonical RBT loop is:
-
-1. Start proactive outreach.
-2. Push that stage to real closure.
-3. Switch into message or resume handling.
-4. Evaluate, filter, and upload or sync downstream results.
-5. Re-run cleanup only if backlog remains.
-6. Emit a structured summary.
-
-This is the product, not just the wrapper.
-
-## What RBT Is Not
-
-This repo does not include:
-
-- private browser profiles
-- production selectors
-- company-specific rules
-- ATS field mappings
-- sensitive execution logs
-- real credentials or tokens
-- private candidate data
-
-## Repository Layout
-
-```text
+```
 RBT/
-  README.md
-  LICENSE
-  .gitignore
-  docs/
-    bosszhipin-closed-loop.md
-    host-integration.md
-    migration-from-private-agent.md
-  specs/
-    agent-contract.md
-    event-schema.json
-    adapter-interface.ts
-  agents/
-    codex/SKILL.md
-    claude/AGENT.md
-  examples/
-    recruiting-demo/README.md
-  templates/
-    .env.example
-    private-boundary-checklist.md
+├── install.sh                    # 一键安装脚本
+├── config.env.template           # 环境变量模板
+├── skills/
+│   └── rbt/SKILL.md              # RBT 编排 skill
+├── automations/
+│   └── codex.toml.template       # Codex 定时触发模板
+├── specs/                        # 接口契约与架构文档
+├── docs/                         # 详细文档
+└── examples/                     # 示例配置
 ```
-
-## Core Concepts
-
-### Modes
-
-- `MORNING_RUN`
-- `EVENING_RUN`
-- `FULL_RUN`
-- `STATUS_QUERY`
-- `STOP`
-- `RETRY_SYNC`
-- `EVOLVE`
-
-### Required Adapters
-
-- `TaskAdapter`: runs stage work such as outreach, inbox handling, evaluation, or sync
-- `OutcomeStoreAdapter`: reads downstream funnel or result data
-- `NotificationAdapter`: publishes progress and final summaries
-- `SafetyAdapter`: enforces stop signals, rate limits, and hard-stop conditions
-
-### Optional Adapters
-
-- `BrowserAdapter`
-- `ResumeStoreAdapter`
-- `RuleStoreAdapter`
-
-## Quick Start
-
-### Install Order
-
-If you want the full Bosszhipin closed loop, install in this order:
-
-1. [`bosszhibin-auto-recruiter-skill`](https://github.com/kinoxuan0518/bosszhibin-auto-recruiter-skill)
-2. [`bosszhibin-message-resume-handler`](https://github.com/kinoxuan0518/bosszhibin-message-resume-handler)
-3. `RBT`
-
-RBT is the orchestration layer.
-
-It becomes useful only after the two downstream Bosszhipin skills are already installed and usable.
-
-If those skills do not work yet, install and verify them first. Then install RBT to remove the need for step-by-step manual instruction.
-
-### First Run Example
-
-Assume you already have:
-
-- a working `bosszhibin-auto-recruiter-skill`
-- a working `bosszhibin-message-resume-handler`
-- valid Bosszhipin login state
-- valid downstream upload or sync access if your flow requires it
-
-Then the expected user experience looks like this:
-
-```text
-User: start morning run
-
-RBT:
-1. checks that the required Bosszhipin skills are available
-2. starts the outreach stage
-3. keeps running outreach until that pass reaches real closure
-4. switches into message and resume handling
-5. evaluates and uploads or syncs qualified results
-6. runs one more cleanup pass if backlog remains
-7. returns a structured summary
-```
-
-In other words, RBT is for the moment after the underlying Bosszhipin skills already work and you want to stop micromanaging the order of operations.
-
-### Option A: Understand the framework
-
-Read these first:
-
-- [`specs/agent-contract.md`](./specs/agent-contract.md)
-- [`specs/adapter-interface.ts`](./specs/adapter-interface.ts)
-- [`specs/event-schema.json`](./specs/event-schema.json)
-
-### Option B: Wire it into a host
-
-- Codex: [`agents/codex/SKILL.md`](./agents/codex/SKILL.md)
-- Codex Bosszhipin orchestrator: [`agents/codex/BOSSZHIPIN_ORCHESTRATOR.md`](./agents/codex/BOSSZHIPIN_ORCHESTRATOR.md)
-- Claude Code: [`agents/claude/AGENT.md`](./agents/claude/AGENT.md)
-- Bosszhipin closed-loop model: [`docs/bosszhipin-closed-loop.md`](./docs/bosszhipin-closed-loop.md)
-- Host integration: [`docs/host-integration.md`](./docs/host-integration.md)
-
-### Option C: Port an existing private agent
-
-Use adapters to bind your private workflow to the public contract.
-
-Before publishing, run through:
-
-- [`templates/private-boundary-checklist.md`](./templates/private-boundary-checklist.md)
-
-## Porting A Private Agent
-
-When moving an existing private sub-agent into RBT:
-
-1. Keep the production implementation private.
-2. Replace absolute paths with adapter calls.
-3. Move vendor-specific logic behind interfaces.
-4. Publish only the portable prompts, schemas, and orchestration semantics.
-5. Provide a fake or demo adapter before exposing a real one.
-
-There is also a migration note here:
-
-- [`docs/migration-from-private-agent.md`](./docs/migration-from-private-agent.md)
-
-## Suggested Release Strategy
-
-Start with:
-
-- public contract
-- one host wrapper
-- one demo workflow
-- one adapter example
-
-Then add:
-
-- vendor-specific adapters
-- evolution helpers
-- analytics helpers
-- richer event taxonomy
-
-## First Release Scope
-
-The current public release focuses on:
-
-- the Bosszhipin closed-loop orchestration idea
-- agent contract
-- event schema
-- adapter interfaces
-- host wrappers
-- migration guidance
-
-It does not yet try to ship a production-ready platform adapter. That boundary is deliberate.
-
-## Chinese Summary
-
-RBT 适合这样一种场景：你已经有一个私下可用的 sub-agent，但它强依赖你自己的本地环境。这个仓库的作用不是把那套私货原样公开，而是把其中可复用的“协议层、编排层、适配层”抽出来，让别人也能接入自己的环境来用。
 
 ## License
 
-This repository uses `Apache-2.0`.
+Apache-2.0

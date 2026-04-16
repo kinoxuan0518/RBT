@@ -1,0 +1,15 @@
+# Codex 定时自动化模板
+# install.sh 会自动生成此文件到 ~/.codex/automations/rbt/
+# 如需手动配置，复制到 ~/.codex/automations/rbt/automation.toml
+
+version = 1
+id = "rbt"
+name = "RBT 晨间招聘流程"
+prompt = "使用 $rbt 开始晨间流程"
+status = "PAUSED"
+
+# 工作日早上 10:00 自动触发
+rrule = "RRULE:FREQ=WEEKLY;BYHOUR=10;BYMINUTE=0;BYDAY=MO,TU,WE,TH,FR"
+
+execution_environment = "local"
+cwds = ["~"]
