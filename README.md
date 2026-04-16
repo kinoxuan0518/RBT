@@ -194,6 +194,16 @@ RBT/
 
 ## Quick Start
 
+### Install Order
+
+If you want the full Bosszhipin closed loop, install in this order:
+
+1. [`bosszhibin-auto-recruiter-skill`](https://github.com/kinoxuan0518/bosszhibin-auto-recruiter-skill)
+2. [`bosszhibin-message-resume-handler`](https://github.com/kinoxuan0518/bosszhibin-message-resume-handler)
+3. `RBT`
+
+RBT is the orchestrator layer. It becomes most useful after the two downstream Bosszhipin skills are already installed and usable.
+
 ### Option A: Understand the framework
 
 Read these first:
