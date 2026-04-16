@@ -8,6 +8,18 @@ It is built for people who already have a private workflow that works, and want 
 
 > Release your Bosszhipin Time.
 
+## Before You Install
+
+RBT is not standalone.
+
+Install and verify these first:
+
+1. [`bosszhibin-auto-recruiter-skill`](https://github.com/kinoxuan0518/bosszhibin-auto-recruiter-skill)
+2. [`bosszhibin-message-resume-handler`](https://github.com/kinoxuan0518/bosszhibin-message-resume-handler)
+3. then `RBT`
+
+If the two Bosszhipin skills are not already working in your environment, RBT will not give you a useful closed loop yet.
+
 ## What Happens When You Type `start`
 
 RBT should be able to:
@@ -225,6 +237,32 @@ RBT is the orchestration layer.
 It becomes useful only after the two downstream Bosszhipin skills are already installed and usable.
 
 If those skills do not work yet, install and verify them first. Then install RBT to remove the need for step-by-step manual instruction.
+
+### First Run Example
+
+Assume you already have:
+
+- a working `bosszhibin-auto-recruiter-skill`
+- a working `bosszhibin-message-resume-handler`
+- valid Bosszhipin login state
+- valid downstream upload or sync access if your flow requires it
+
+Then the expected user experience looks like this:
+
+```text
+User: start morning run
+
+RBT:
+1. checks that the required Bosszhipin skills are available
+2. starts the outreach stage
+3. keeps running outreach until that pass reaches real closure
+4. switches into message and resume handling
+5. evaluates and uploads or syncs qualified results
+6. runs one more cleanup pass if backlog remains
+7. returns a structured summary
+```
+
+In other words, RBT is for the moment after the underlying Bosszhipin skills already work and you want to stop micromanaging the order of operations.
 
 ### Option A: Understand the framework
 
