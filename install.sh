@@ -11,6 +11,9 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
+# 使用绝对路径，避免从其他目录调用时出错
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo ""
 echo "🚀 RBT (Release BossZhipin Time) Installer"
 echo "─────────────────────────────────────────"
@@ -48,10 +51,13 @@ install_skill() {
 
     if [ -d "$target" ]; then
         echo -e "  ${YELLOW}↻ $name 已存在，正在更新...${NC}"
-        git -C "$target" pull --quiet
+        git -C "$target" pull --quiet || echo -e "  ${YELLOW}⚠ 更新失败，使用现有版本${NC}"
     else
         echo -e "  ↓ 正在安装 $name..."
-        git clone --quiet "https://github.com/kinoxuan0518/$repo.git" "$target"
+        if ! git clone --quiet "https://github.com/kinoxuan0518/$repo.git" "$target"; then
+            echo -e "  ${RED}✗ 安装 $name 失败，请检查网络或 GitHub 访问${NC}"
+            exit 1
+        fi
     fi
     echo -e "  ${GREEN}✓ $name${NC}"
 }
@@ -63,15 +69,15 @@ install_skill "bosszhibin-message-resume-handler" "bosszhibin-message-resume-han
 echo ""
 echo "📦 安装 RBT 编排层..."
 mkdir -p "$SKILLS_DIR/rbt/references"
-cp "$(dirname "$0")/skills/rbt/SKILL.md" "$SKILLS_DIR/rbt/SKILL.md"
+cp "$SCRIPT_DIR/skills/rbt/SKILL.md" "$SKILLS_DIR/rbt/SKILL.md"
 echo -e "${GREEN}✓ rbt${NC}"
 
 # ── 5. 配置环境变量 ───────────────────────────
 echo ""
-CONFIG_FILE="$(dirname "$0")/config.env"
+CONFIG_FILE="$SCRIPT_DIR/config.env"
 
 if [ ! -f "$CONFIG_FILE" ]; then
-    cp "$(dirname "$0")/config.env.template" "$CONFIG_FILE"
+    cp "$SCRIPT_DIR/config.env.template" "$CONFIG_FILE"
     echo -e "${YELLOW}⚠ 已创建 config.env，请填入你的飞书配置后重新运行：${NC}"
     echo -e "   ${YELLOW}source config.env${NC}"
     echo ""
@@ -127,6 +133,9 @@ echo "下一步："
 echo "  1. 编辑 config.env，填入飞书配置"
 echo "  2. 打开 Chrome，登录 BOSS 直聘企业端"
 echo "  3. 在你的 AI 工具中说：rbt 开始晨间流程"
+echo ""
+echo "飞书同步脚本路径："
+echo "  $SKILLS_DIR/bosszhibin-auto-recruiter/scripts/feishu_candidate_sync.py"
 echo ""
 if [ "$PLATFORM" = "codex" ]; then
     echo "  Codex 用户：在 Codex 中前往 Automations → rbt → 启用"
