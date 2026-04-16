@@ -70,10 +70,10 @@ source config.env
 
 ## 验证配置
 
-配置完成后可以运行以下命令验证连通性：
+配置完成后，直接在你的 AI 工具中说：
 
-```bash
-python3 ~/.rbt/skills/bosszhibin-auto-recruiter/scripts/feishu_candidate_sync.py --dry-run
+```
+rbt 开始晨间流程
 ```
 
-（Codex 用户路径为 `~/.codex/skills/bosszhibin-auto-recruiter/scripts/feishu_candidate_sync.py`）
+RBT 会在执行前自动检查飞书连接是否正常。如果配置有误，会在第一步报错提示。
