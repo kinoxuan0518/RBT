@@ -18,6 +18,15 @@ echo ""
 echo "🚀 RBT (Release BossZhipin Time) Installer"
 echo "─────────────────────────────────────────"
 
+# ── 0. 依赖检查 ───────────────────────────────
+for cmd in git python3; do
+    if ! command -v $cmd &>/dev/null; then
+        echo -e "${RED}✗ 未找到 $cmd，请先安装后重试${NC}"
+        exit 1
+    fi
+done
+echo -e "${GREEN}✓ 依赖检查通过（git, python3）${NC}"
+
 # ── 1. 检测平台 ───────────────────────────────
 if [ -d "$HOME/.codex" ]; then
     PLATFORM="codex"
