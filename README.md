@@ -2,6 +2,8 @@
 
 RBT, short for Release Bosszhipin Time, is a Bosszhipin closed-loop orchestrator that turns one high-level command into a full recruiting run.
 
+It does not replace the Bosszhipin skills. It orchestrates them.
+
 It is built for people who already have a private workflow that works, and want to preserve the real operational value publicly without leaking private infrastructure.
 
 > Release your Bosszhipin Time.
@@ -27,6 +29,17 @@ That is the product.
 - One closed loop from greeting to downstream upload or sync
 - Minimal user micromanagement
 - Public orchestration layer, private execution layer
+
+## Dependency Model
+
+RBT is not a standalone recruiting skill.
+
+RBT assumes you already have:
+
+- one usable Bosszhipin outreach skill
+- one usable Bosszhipin message and resume handling skill
+
+RBT sits on top of those skills and coordinates them into one closed loop.
 
 ## The Core Value
 
@@ -97,6 +110,11 @@ In practice, RBT gives you a clean split:
 
 - public repo: contract, wrappers, schemas, examples
 - private repo: production adapters, secrets, platform details, business logic
+
+And a clean responsibility split:
+
+- Boss skills: do the actual outreach, message handling, resume handling, and upload work
+- RBT: decides when each skill runs, when a stage is really done, and when to summarize
 
 ## Why This Is Better Than A Prompt Dump
 
@@ -202,7 +220,11 @@ If you want the full Bosszhipin closed loop, install in this order:
 2. [`bosszhibin-message-resume-handler`](https://github.com/kinoxuan0518/bosszhibin-message-resume-handler)
 3. `RBT`
 
-RBT is the orchestrator layer. It becomes most useful after the two downstream Bosszhipin skills are already installed and usable.
+RBT is the orchestration layer.
+
+It becomes useful only after the two downstream Bosszhipin skills are already installed and usable.
+
+If those skills do not work yet, install and verify them first. Then install RBT to remove the need for step-by-step manual instruction.
 
 ### Option A: Understand the framework
 
